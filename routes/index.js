@@ -29,4 +29,10 @@ db.on('disconnected', () => {
   console.log('MongoDB connected to disconnected');
 });
 
+
+// router.get('/', function(req, res, next) {
+//   res.send('Hello, world')
+// });
+
+
 module.exports = router;
