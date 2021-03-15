@@ -84,9 +84,9 @@ router.post("/queryAllAmount", (req, res, next) => {
 * */
 router.post("/queryPayAmount", (req, res, next) => {
   console.log('queryPayAmount', BillList);
-  const { billType } = req.body;
+  const { billType, startDate, endDate } = req.body;
+
   console.log(req.body);
-  let group = {};
   if (billType === 'ALL') {
 
     BillList.aggregate([
@@ -102,6 +102,11 @@ router.post("/queryPayAmount", (req, res, next) => {
         $unwind: {
           path: "$billList",
           preserveNullAndEmptyArrays: true,
+        }
+      },
+      {
+        $match: {
+          "billList.date":  { $gte: new Date(startDate),  $lte: new Date(endDate) }
         }
       },
       {
@@ -127,6 +132,8 @@ router.post("/queryPayAmount", (req, res, next) => {
       }
     });
   } else {
+
+
     Billbook.aggregate([
       {
         $lookup: {
@@ -137,27 +144,23 @@ router.post("/queryPayAmount", (req, res, next) => {
         }
       },
       {
-        $match: {...req.body}
-      },
-      {
         $unwind: {
           path: "$billList",
           preserveNullAndEmptyArrays: true,
         }
       },
       {
+        $match: {
+          billType,
+          "billList.date":  { $gte: new Date(startDate),  $lte: new Date(endDate) }
+        }
+      },
+
+      {
         $group: {
           _id: '$billType',
           lists: {
             $push: '$billList',
-            // $push: {
-            //   date: {
-            //     $dateToString:{
-            //       format:"%Y-%m-%d",
-            //       date: "$billList.date"
-            //     }
-            //   },
-            // },
           },
           allAmount: {
             "$sum": "$billList.amount"

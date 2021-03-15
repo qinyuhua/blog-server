@@ -2,21 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c1448990-3a14-4bd4-ae2e-65226eefeedc" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/models/billList.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/billbook.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/webSocketDemo.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/routes/billList.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/routes/billbook.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/routes/webSocketDemo.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/error.jade" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/index.jade" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/layout.jade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/billList.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/billList.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -137,7 +124,7 @@
       <workItem from="1615338901944" duration="8373000" />
       <workItem from="1615425012201" duration="21774000" />
       <workItem from="1615511651803" duration="7820000" />
-      <workItem from="1615771053996" duration="8989000" />
+      <workItem from="1615771053996" duration="11461000" />
     </task>
     <servers />
   </component>
