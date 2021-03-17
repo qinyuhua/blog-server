@@ -26,6 +26,29 @@ router.post("/insert", (req, res, next) => {
   });
 });
 
+/*
+* 修改
+* */
+router.post("/update", (req, res, next) => {
+  console.log('update', req.body);
+  const { _id,  } = req.body;
+  req.body.time = new Date().getTime();
+  req.body.date = req.body.date ? new Date(req.body.date) : new Date();
+  BillList.findOneAndUpdate({ _id }, { ...req.body }, (err, doc) => { // 修改
+    if (err) {
+      res.json({
+        success: false,
+        errorMsg: err.message
+      });
+    } else {
+      res.json({
+        success: true,
+        errorMsg: '修改成功',
+      });
+    }
+  });
+});
+
 
 
 /*
@@ -48,6 +71,7 @@ router.post("/queryAllAmount", (req, res, next) => {
       $group: {
         _id: "$type",
         TotalAmount: { $sum: { $toInt: "$amount" }},
+        TotalIncomeAmount: { $sum: { $toInt: "$__v" }},
       },
     },
   ], (err, doc) => {
@@ -65,7 +89,7 @@ router.post("/queryAllAmount", (req, res, next) => {
         });
       } else {
         const totalPayAmount = (doc.find(item => item._id === 'pay') || {}).TotalAmount;
-        const totalIncomeAmount = (doc.find(item => item._id === 'income') || {}).TotalAmount;
+        const totalIncomeAmount = (doc.find(item => item._id === 'income') || {}).TotalIncomeAmount;
         res.json({
           success: true,
           data: {
@@ -114,7 +138,12 @@ router.post("/queryPayAmount", (req, res, next) => {
           _id: null,
           allAmount: { $sum: { $toInt: "$amount" }},
           lists: {
-            $push: '$billList',}
+            $push: '$billList',
+          },
+          // bookName: { "$first": "$bookName" },
+          // billType: { "$first": "$billType" },
+          // monthBudgetAmount: { "$first": "$monthBudgetAmount" },
+          // budgetAmount: { "$first": "$budgetAmount" },
         },
       },
     ], (err, doc) => {
@@ -152,10 +181,11 @@ router.post("/queryPayAmount", (req, res, next) => {
       {
         $match: {
           billType,
-          "billList.date":  { $gte: new Date(startDate),  $lte: new Date(endDate) }
+          $or: [
+            { "billList.date":  { $gte: new Date(startDate),  $lte: new Date(endDate) }},
+            { "billList":  { $eq: undefined } }]
         }
       },
-
       {
         $group: {
           _id: '$billType',
@@ -217,7 +247,8 @@ router.post("/queryList", (req, res, next) => {
 * */
 router.post("/queryListGroup", (req, res, next) => {
   console.log('queryListGroup', BillList);
-  // req.body.month = '202101';
+
+
   const { startDate, endDate } = req.body;
   BillList.aggregate([
     {
@@ -244,6 +275,7 @@ router.post("/queryListGroup", (req, res, next) => {
         billType: "$billType",
         type: "$type",
         amount: "$amount",
+        income: "$__v",
         month: "$month",
         bookName: "$billTypeName.bookName",
         monthBudgetAmount: "$billTypeName.monthBudgetAmount",
@@ -259,21 +291,18 @@ router.post("/queryListGroup", (req, res, next) => {
         allPayAmount: {
           "$sum": "$amount"
         },
+        allIncomeAmout: {
+          "$sum": "$income"
+        },
+
       },
     },
-    // {
-    //   $group: {
-    //     _id: "$type",
-    //     allPayAmount: {
-    //       "$sum": "$amount"
-    //     },
-    //   },
-    // },
     {
       $project: {
         id: 1,
         date: "$_id",
         allPayAmount: "$allPayAmount",
+        allIncomeAmout: "$allIncomeAmout",
         lists: 1,
       }
     }

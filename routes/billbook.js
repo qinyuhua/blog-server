@@ -3,119 +3,6 @@ const router = express.Router();
 const Billbook = require('../models/billbook');
 const BillList = require('../models/billList');
 
-// /*
-// * 查询
-// * */
-// router.post("/findBillBooks", (req, res, next) => {
-//   console.log('findBillBooks', Billbook);
-//   Billbook.find({}, (err, doc) => {
-//     // console.log(1, err, doc);
-//     if(err) {
-//       res.json({
-//         success: false,
-//         message: err.message,
-//       });
-//     } else {
-//       BillList.find({}, (err1, doc1) => {
-//
-//         const obj = {};
-//         let allAmount = 0;
-//         doc.map(item => {
-//           if (obj[item.billType] === undefined) {
-//             obj[item.billType] = 0;
-//           }
-//         });
-//         doc1.map(item => {
-//           obj[item.billType] += item.amount;
-//           allAmount += item.amount;
-//         });
-//         doc.map(item => {
-//           console.log(0, item);
-//           if (item.billType === 'ALL') {
-//             item.payAmount = allAmount;
-//           } else {
-//             item.payAmount = obj[item.billType]; // 如果返回新增字段，也需要在models 里面新加字段
-//           }
-//         });
-//
-//         console.log(1, doc);
-//
-//         res.json({
-//           success: true,
-//           data: {
-//             list: doc,
-//           }
-//         });
-//
-//       });
-//
-//     }
-//   }).sort({ id: 1});
-// });
-
-
-/*
-* 查询
-* */
-router.post("/findBillBooks", (req, res, next) => {
-  console.log('findBillBooks', Billbook);
-  Billbook.aggregate([
-    {
-      $lookup: {
-        from: 'billList',
-        localField: 'billType',
-        foreignField: "billType",
-        as: 'billList',
-      }
-    },
-    {
-      $unwind: {
-        path: "$billList",
-        preserveNullAndEmptyArrays: true,
-      }
-    },
-    {
-      $group: {
-        _id: '$billType',
-        id:  { "$first": "$id" },
-        billType: { "$first": "$billType" },
-        bookName: { "$first": "$bookName" },
-        monthBudgetAmount: { "$first": "$monthBudgetAmount" },
-        budgetAmount: { "$first": "$budgetAmount" },
-        payAmount: {
-          "$sum": "$billList.amount"
-        },
-      },
-    },
-  ], (err, doc) => {
-    if(err){
-      res.json({
-        success: false,
-        errorMsg: err.message
-      });
-    } else {
-      let allAmount = 0;
-      doc.map(item => {
-        allAmount += item.payAmount;
-      });
-      doc.map(item => {
-        if (item.billType === 'ALL') {
-          item.payAmount = allAmount;
-        }
-        return item;
-      });
-
-      console.log(1, doc);
-      res.json({
-        success: true,
-        data: doc,
-      });
-    }
-
-  }).sort({ id: 1});
-});
-
-
 
 /*
 * 新增
@@ -179,6 +66,120 @@ router.post("/update", (req, res, next) => {
     }
   });
 });
+
+// /*
+// * 查询
+// * */
+router.post("/findAllBooks", (req, res, next) => {
+  console.log('findAllBooks', Billbook);
+  Billbook.find({}, (err, doc) => {
+    // console.log(1, err, doc);
+    if(err) {
+      res.json({
+        success: false,
+        message: err.message,
+      });
+    } else {
+      res.json({
+        success: true,
+        data: doc
+      });
+
+    }
+  }).sort({ id: 1});
+});
+
+
+/*
+* 查询
+* */
+router.post("/findBillBooks", (req, res, next) => {
+  console.log('findBillBooks', req.body);
+
+  const { startDate, endDate } = req.body;
+
+  Billbook.aggregate([
+    {
+      $lookup: {
+        from: 'billList',
+        localField: 'billType',
+        foreignField: "billType",
+        as: 'billList',
+      }
+    },
+    {
+      $unwind: {
+        path: "$billList",
+        preserveNullAndEmptyArrays: true,
+      }
+    },
+    {
+      $match: {
+        $or: [
+          { "billList.date":  { $gte: new Date(startDate),  $lte: new Date(endDate) }},
+          { "billList":  { $eq: undefined } }
+          ]
+      }
+    },
+    {
+      $group: {
+        _id: '$billType',
+        id:  { "$first": "$id" },
+        billType: { "$first": "$billType" },
+        bookName: { "$first": "$bookName" },
+        monthBudgetAmount: { "$first": "$monthBudgetAmount" },
+        budgetAmount: { "$first": "$budgetAmount" },
+        payAmount: {
+          "$sum": "$billList.amount"
+        },
+        incomeAmount: {
+          "$sum": "$billList.__v"
+        },
+        count: {
+          "$sum": 1,
+        }
+      },
+    },
+  ], (err, doc) => {
+    if(err){
+      res.json({
+        success: false,
+        errorMsg: err.message
+      });
+    } else {
+      let allAmount = 0;
+      doc.map(item => {
+        if (item.billType !== 'ALL') {
+          allAmount += item.payAmount;
+        }
+      });
+      if (!doc.find(item => item.billType === 'ALL')) {
+        doc.push({
+          bookName: '总账单',
+          billType: 'ALL',
+          monthBudgetAmount: 650000,
+          budgetAmount: 78000000,
+          incomeAmount: 0,
+        });
+      }
+      doc.map(item => {
+        if (item.billType === 'ALL') {
+          item.payAmount = allAmount;
+        }
+        return item;
+      });
+
+      // console.log(1, doc);
+      res.json({
+        success: true,
+        data: doc,
+      });
+    }
+
+  }).sort({ payAmount: -1});
+});
+
+
 
 
 module.exports = router;

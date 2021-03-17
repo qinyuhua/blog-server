@@ -10,6 +10,7 @@ const billLists = new Schema({
   "billType": {type: String, required: false}, //
   "type": {type: String, required: false}, //
   "amount": {type: Number, required: false}, //
+  "income": {type: Number, required: false}, //
 });
 
 /*

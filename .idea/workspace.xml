@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="c1448990-3a14-4bd4-ae2e-65226eefeedc" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/billList.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/billList.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/billList.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/billList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/billbook.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/billbook.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,7 +29,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../my-bill" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
@@ -125,6 +127,8 @@
       <workItem from="1615425012201" duration="21774000" />
       <workItem from="1615511651803" duration="7820000" />
       <workItem from="1615771053996" duration="11461000" />
+      <workItem from="1615857434752" duration="7233000" />
+      <workItem from="1615943230362" duration="13494000" />
     </task>
     <servers />
   </component>
