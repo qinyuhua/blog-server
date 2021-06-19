@@ -6,14 +6,16 @@ const webSocketServer = require('websocket').server;
 // const server = http.createServer();
 
 
-console.log('websocketDemo。。。。');
+console.log('websocketDemo。。。。', webSocketServer);
 
 /*
 * 新增
 * */
-router.get("/connect", (req, res, next) => {
+express.post("/connect", (req, res, next) => {
   console.log(1);
   console.log(server);
+  const app = express();
+
 
   wss = new webSocketServer({
     httpServer: server,
@@ -51,6 +53,7 @@ router.get("/connect", (req, res, next) => {
     clients[userID] = connection;
     console.log('connected: ' + userID + ' in ' + Object.getOwnPropertyNames(clients))
   });
+
 
 
 });

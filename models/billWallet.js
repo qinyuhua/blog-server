@@ -2,16 +2,13 @@ const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
 // Schema 一种以文件形式储存的数据库模型骨架，无法直接通往数据库端，不具备对数据库的操作能力
-const billLists = new Schema({
-  "billTitle": {type: String, required: false}, // 账单名称
-  "time": {type: Date, required: false}, //
-  "date": {type: Date, required: false}, //
-  "month": {type: String, required: false}, //
-  "billType": {type: String, required: false}, //
-  "type": {type: String, required: false}, //
-  "amount": {type: Number, required: false}, //
-  "income": {type: Number, required: false}, //
-  "__v": {type: Number, required: false}, //
+const billWallets = new Schema({
+  "walletName": {type: String, required: false}, // 钱包名称
+  "walletType": {type: String, required: false}, // 钱包类型
+  "payAmount": {type: Number, required: false}, // 支出
+  "monthBudgetAmount": {type: Number, required: false}, // 月预算
+  "budgetAmount": {type: Number, required: false}, // 年总预算
+  "balance": {type: Number, required: false}, // 余额
 });
 
 /*
@@ -24,4 +21,4 @@ const billLists = new Schema({
 *     第二个参数 保存的文档对象
 *     第三个参数
 * */
-module.exports = model('billList', billLists, 'billList');
+module.exports = model('billWallet', billWallets, 'billWallet');

@@ -52,7 +52,7 @@ router.post("/update", (req, res, next) => {
 
 
 /*
-* 查询 总支出、总收入
+* 查询 时间内的 总支出、总收入
 * */
 router.post("/queryAllAmount", (req, res, next) => {
   console.log('queryAllAmount', BillList);
@@ -63,7 +63,6 @@ router.post("/queryAllAmount", (req, res, next) => {
   BillList.aggregate([
     {
       $match: {
-        // ...req.body,
         date: { $gte: new Date(startDate),  $lte: new Date(endDate) }
       }
     },
@@ -82,29 +81,22 @@ router.post("/queryAllAmount", (req, res, next) => {
         message: err.message,
       });
     } else {
-      if (doc.length === 0) {
-        res.json({
-          success: true,
-          data: {},
-        });
-      } else {
-        const totalPayAmount = (doc.find(item => item._id === 'pay') || {}).TotalAmount;
-        const totalIncomeAmount = (doc.find(item => item._id === 'income') || {}).TotalIncomeAmount;
-        res.json({
-          success: true,
-          data: {
-            totalPayAmount,
-            totalIncomeAmount
-          },
-        });
-      }
+      const totalPayAmount = (doc.find(item => item._id === 'pay') || {}).TotalAmount;
+      const totalIncomeAmount = (doc.find(item => item._id === 'income') || {}).TotalIncomeAmount;
+      res.json({
+        success: true,
+        data: {
+          totalPayAmount,
+          totalIncomeAmount
+        },
+      });
     }
   });
 });
 
 
 /*
-* 查询
+* 查询 支出
 * */
 router.post("/queryPayAmount", (req, res, next) => {
   console.log('queryPayAmount', BillList);
@@ -128,15 +120,18 @@ router.post("/queryPayAmount", (req, res, next) => {
           preserveNullAndEmptyArrays: true,
         }
       },
+      { $sort: { "billList.date": -1 }},
       {
         $match: {
-          "billList.date":  { $gte: new Date(startDate),  $lte: new Date(endDate) }
+          "billList.date":  { $gte: new Date(startDate),  $lte: new Date(endDate) },
+          "billList.type": 'pay',
         }
       },
       {
         $group: {
           _id: null,
           allAmount: { $sum: { $toInt: "$amount" }},
+          // allIncomeAmount: { $sum: { $toInt: "$__v" }},
           lists: {
             $push: '$billList',
           },
@@ -154,16 +149,40 @@ router.post("/queryPayAmount", (req, res, next) => {
           message: err.message,
         });
       } else {
-        res.json({
-          success: true,
-          data: doc,
-        });
+
+        Billbook.find({ billType: 'ALL' }, (err1, doc1) => {
+          console.log(1, doc1);
+          if(err1) {
+            res.json({
+              success: false,
+              message: err1.message,
+            });
+          } else {
+            const obj = doc1?.[0];
+            doc[0].bookName = obj.bookName;
+            doc[0].billType = obj.billType;
+            doc[0].monthBudgetAmount = obj.monthBudgetAmount;
+            doc[0].budgetAmount = obj.budgetAmount;
+            res.json({
+              success: true,
+              data: doc,
+            });
+          }
+        })
+
+
+
+
       }
     });
   } else {
 
-
     Billbook.aggregate([
+      {
+        $match: {
+          billType,
+        }
+      },
       {
         $lookup: {
           from: 'billList',
@@ -178,12 +197,13 @@ router.post("/queryPayAmount", (req, res, next) => {
           preserveNullAndEmptyArrays: true,
         }
       },
+      { $sort: { "billList.date": -1 }},
       {
         $match: {
-          billType,
           $or: [
             { "billList.date":  { $gte: new Date(startDate),  $lte: new Date(endDate) }},
-            { "billList":  { $eq: undefined } }]
+            { "billList":  { $eq: undefined } }
+          ]
         }
       },
       {
@@ -201,6 +221,7 @@ router.post("/queryPayAmount", (req, res, next) => {
           budgetAmount: { "$first": "$budgetAmount" },
         },
       },
+
     ], (err, doc) => {
       console.log(1, err, doc);
       if(err) {
@@ -209,24 +230,60 @@ router.post("/queryPayAmount", (req, res, next) => {
           message: err.message,
         });
       } else {
-        res.json({
-          success: true,
-          data: doc,
-        });
-      }
-    }).sort({date: -1});
-  }
+        if (doc.length !== 0) {
+          res.json({
+            success: true,
+            data: doc,
+          });
+          return;
+        }
 
+        Billbook.find({ billType }, (err1, doc1) => {
+          console.log(1, doc1);
+          if(err1) {
+            res.json({
+              success: false,
+              message: err1.message,
+            });
+          } else {
+            doc1[0].billList = [];
+            doc1[0].allAmount = 0;
+            res.json({
+              success: true,
+              data: doc1,
+            });
+          }
+        })
+      }
+    });
+  }
 });
 
 
 /*
-* 查询
+* 查询 年收入 和 年支出
 * */
-router.post("/queryList", (req, res, next) => {
-  console.log('queryList', BillList);
-  BillList.find({ ...req.body }, (err, doc) => {
-    console.log(1, err, doc);
+router.post("/queryIncomeAmount", (req, res, next) => {
+  const { startDate, endDate } = req.body;
+  BillList.aggregate([
+    {
+      $match: {
+        date: { $gte: new Date(startDate),  $lte: new Date(endDate) }
+      }
+    },
+    { $sort: { "date": -1 }},
+    {
+      $group: {
+        _id: "$type",
+        TotalAmount: { $sum: { $toInt: "$amount" }},
+        TotalIncomeAmount: { $sum: { $toInt: "$__v" }},
+        billList: {
+          $push: "$$ROOT",
+        },
+      },
+    },
+
+  ], (err, doc) => {
     if(err) {
       res.json({
         success: false,
@@ -239,11 +296,12 @@ router.post("/queryList", (req, res, next) => {
         data: doc,
       });
     }
-  }).sort({id: 1});
+  });
+
 });
 
 /*
-* 分组查询
+* 分组查询 每天的支出和消费
 * */
 router.post("/queryListGroup", (req, res, next) => {
   console.log('queryListGroup', BillList);
@@ -307,7 +365,7 @@ router.post("/queryListGroup", (req, res, next) => {
       }
     }
   ], (err, doc) => {
-    console.log(1, err, doc);
+    // console.log(1, err, doc);
     if(err) {
       res.json({
         success: false,
@@ -317,6 +375,27 @@ router.post("/queryListGroup", (req, res, next) => {
       res.json({
         success: true,
         msg:'',
+        data: doc,
+      });
+    }
+  }).sort({date: -1});
+});
+
+
+router.post("/queryAllList", (req, res, next) => {
+  console.log('queryAllList', BillList);
+
+
+  BillList.find({}, (err, doc) => {
+    console.log(1, doc);
+    if(err) {
+      res.json({
+        success: false,
+        message: err.message,
+      });
+    } else {
+      res.json({
+        success: true,
         data: doc,
       });
     }

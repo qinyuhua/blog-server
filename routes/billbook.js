@@ -100,6 +100,11 @@ router.post("/findBillBooks", (req, res, next) => {
 
   Billbook.aggregate([
     {
+      $match: {
+        accountType: 'pay'
+      }
+    },
+    {
       $lookup: {
         from: 'billList',
         localField: 'billType',
@@ -177,6 +182,56 @@ router.post("/findBillBooks", (req, res, next) => {
     }
 
   }).sort({ payAmount: -1});
+});
+
+
+/*
+* 查询
+* */
+router.post("/findBillByMonths", (req, res, next) => {
+  console.log('findBillByMonths', req.body);
+
+  const { startDate, endDate } = req.body;
+
+  BillList.aggregate([
+    {
+      $match: {
+        type: 'pay'
+      }
+    },
+
+    { $group: {
+        "_id": {
+          "month": { $substr: [ "$date", 0, 7 ] }
+        },
+        // "month": { $substr: [ "$date", 5, 2 ] },
+        allPayAmount: {
+          $sum: "$amount",
+        },
+        count: {
+          $sum: 1,
+        },
+        lists: {
+          $push: "$$ROOT",
+        },
+      }
+    },
+
+  ], (err, doc) => {
+    if(err){
+      res.json({
+        success: false,
+        errorMsg: err.message
+      });
+    } else {
+      console.log(1, doc);
+      res.json({
+        success: true,
+        data: doc,
+      });
+    }
+
+  }).sort({ '_id.month': 1});
 });
 
 

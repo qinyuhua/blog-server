@@ -2,10 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c1448990-3a14-4bd4-ae2e-65226eefeedc" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/models/account.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/billWallet.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/routes/billWallet.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/billList.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/billList.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/billList.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/billList.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/billbook.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/billbook.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/webSocketDemo.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/webSocketDemo.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -29,7 +34,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../h5app" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
@@ -129,11 +134,76 @@
       <workItem from="1615771053996" duration="11461000" />
       <workItem from="1615857434752" duration="7233000" />
       <workItem from="1615943230362" duration="13494000" />
+      <workItem from="1616029869851" duration="12025000" />
+      <workItem from="1616116915175" duration="6849000" />
+      <workItem from="1616376426620" duration="7635000" />
+      <workItem from="1616461784731" duration="1801000" />
+      <workItem from="1616549306492" duration="1882000" />
+      <workItem from="1616634964388" duration="7713000" />
+      <workItem from="1616722692063" duration="2696000" />
+      <workItem from="1616980441132" duration="1909000" />
+      <workItem from="1617066647704" duration="2442000" />
+      <workItem from="1617179227961" duration="616000" />
+      <workItem from="1617240110640" duration="1183000" />
+      <workItem from="1617245111753" duration="609000" />
+      <workItem from="1617671586198" duration="1220000" />
+      <workItem from="1617757444191" duration="624000" />
+      <workItem from="1617844343734" duration="690000" />
+      <workItem from="1617936321162" duration="598000" />
+      <workItem from="1618018324843" duration="1175000" />
+      <workItem from="1618189870419" duration="1080000" />
+      <workItem from="1618276201411" duration="598000" />
+      <workItem from="1618362700114" duration="1201000" />
+      <workItem from="1618449423431" duration="906000" />
+      <workItem from="1618535409216" duration="598000" />
+      <workItem from="1618627926796" duration="1267000" />
+      <workItem from="1618794925050" duration="606000" />
+      <workItem from="1618810512787" duration="599000" />
+      <workItem from="1618881049074" duration="599000" />
+      <workItem from="1618967868652" duration="1199000" />
+      <workItem from="1619053718846" duration="6055000" />
+      <workItem from="1619143698724" duration="725000" />
+      <workItem from="1619313424676" duration="1802000" />
+      <workItem from="1619399767698" duration="596000" />
+      <workItem from="1619486311872" duration="596000" />
+      <workItem from="1620263773797" duration="614000" />
+      <workItem from="1620283348269" duration="1213000" />
+      <workItem from="1620451179523" duration="608000" />
+      <workItem from="1620697638758" duration="632000" />
+      <workItem from="1620781234481" duration="4108000" />
+      <workItem from="1620789558606" duration="2743000" />
+      <workItem from="1620868053787" duration="1806000" />
+      <workItem from="1620954684420" duration="1200000" />
+      <workItem from="1621215100853" duration="1200000" />
+      <workItem from="1621299769656" duration="1798000" />
+      <workItem from="1621661431322" duration="1282000" />
+      <workItem from="1621818121947" duration="599000" />
+      <workItem from="1621991658929" duration="1200000" />
+      <workItem from="1622078109692" duration="1220000" />
+      <workItem from="1622513464479" duration="2199000" />
+      <workItem from="1622596544005" duration="3000" />
+      <workItem from="1622625454011" duration="1434000" />
+      <workItem from="1622684130300" duration="1508000" />
+      <workItem from="1622708462980" duration="18000" />
+      <workItem from="1623057902050" duration="1317000" />
+      <workItem from="1623113975954" duration="1518000" />
+      <workItem from="1623833011397" duration="619000" />
+      <workItem from="1623894248967" duration="597000" />
+      <workItem from="1624089731235" duration="2100000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/../../Code/evaluation-web/node_modules/umi-utils/src/index.d.ts" />
+        <option value="$PROJECT_DIR$/../../Code/evaluation-web/node_modules/cross-port-killer/test/test.js" />
+        <option value="$PROJECT_DIR$/../../Code/evaluation-web/node_modules/cross-port-killer/test/test.d.ts" />
+        <option value="$PROJECT_DIR$/../../Code/evaluation-web/node_modules/umi-plugin-dva/src/fixtures/getModel/models/models/a.jsx" />
+        <option value="$PROJECT_DIR$/../../Code/evaluation-web/node_modules/umi-plugin-dva/src/fixtures/getModel/models/models/a.js" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.History.Properties">
     <option name="COLUMN_ORDER">
