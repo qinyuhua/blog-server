@@ -11,7 +11,6 @@ const billLists = new Schema({
   "type": {type: String, required: false}, //
   "amount": {type: Number, required: false}, //
   "income": {type: Number, required: false}, //
-  "__v": {type: Number, required: false}, //
 });
 
 /*

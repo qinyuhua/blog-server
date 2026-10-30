@@ -70,7 +70,7 @@ router.post("/queryAllAmount", (req, res, next) => {
       $group: {
         _id: "$type",
         TotalAmount: { $sum: { $toInt: "$amount" }},
-        TotalIncomeAmount: { $sum: { $toInt: "$__v" }},
+        TotalIncomeAmount: { $sum: { $toInt: "$income" } },
       },
     },
   ], (err, doc) => {
@@ -131,7 +131,6 @@ router.post("/queryPayAmount", (req, res, next) => {
         $group: {
           _id: null,
           allAmount: { $sum: { $toInt: "$amount" }},
-          // allIncomeAmount: { $sum: { $toInt: "$__v" }},
           lists: {
             $push: '$billList',
           },
@@ -276,7 +275,7 @@ router.post("/queryIncomeAmount", (req, res, next) => {
       $group: {
         _id: "$type",
         TotalAmount: { $sum: { $toInt: "$amount" }},
-        TotalIncomeAmount: { $sum: { $toInt: "$__v" }},
+        TotalIncomeAmount: { $sum: { $toInt: "$income" } },
         billList: {
           $push: "$$ROOT",
         },
@@ -333,7 +332,7 @@ router.post("/queryListGroup", (req, res, next) => {
         billType: "$billType",
         type: "$type",
         amount: "$amount",
-        income: "$__v",
+        income: "$income",
         month: "$month",
         bookName: "$billTypeName.bookName",
         monthBudgetAmount: "$billTypeName.monthBudgetAmount",

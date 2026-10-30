@@ -49,8 +49,8 @@ router.post("/insert", (req, res, next) => {
 * */
 router.post("/update", (req, res, next) => {
   console.log('update', req.body);
-  const { id } = req.body || {};
-  Billbook.findOneAndUpdate({ id }, {
+  const { _id } = req.body || {};
+  Billbook.findOneAndUpdate({ _id }, {
     ...req.body,
   },  function (err, doc) {
     if(err){
@@ -138,7 +138,7 @@ router.post("/findBillBooks", (req, res, next) => {
           "$sum": "$billList.amount"
         },
         incomeAmount: {
-          "$sum": "$billList.__v"
+          "$sum": "$billList.income"
         },
         count: {
           "$sum": 1,

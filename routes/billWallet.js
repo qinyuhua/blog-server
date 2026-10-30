@@ -18,7 +18,7 @@ router.post("/insert", (req, res, next) => {
       if (doc) {
         res.json({
           success: false,
-          errorMsg: `${doc.bookName}已存在，不能重复添加`
+          errorMsg: `${doc.walletName}已存在，不能重复添加`
         });
       } else {
         req.body.createAt = new Date().getTime();

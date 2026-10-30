@@ -11,7 +11,7 @@ console.log('websocketDemo。。。。', webSocketServer);
 /*
 * 新增
 * */
-express.post("/connect", (req, res, next) => {
+router.post("/connect", (req, res, next) => {
   console.log(1);
   console.log(server);
   const app = express();
