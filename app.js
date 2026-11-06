@@ -17,6 +17,8 @@ const billWallet = require('./routes/billWallet');
 const miniAppAuth = require('./routes/miniAppAuth');
 const miniAppUsers = require('./routes/miniAppUsers');
 const asset = require('./routes/asset');
+const moduleConfig = require('./routes/moduleConfig');
+const woolActivity = require('./routes/woolActivity');
 
 const app = express();
 const allowedOrigins = new Set(corsOrigins);
@@ -32,20 +34,22 @@ app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 app.use(audit);
 
 const authLimiter = createRateLimit({ windowMs: 15 * 60 * 1000, limit: 30 });
-app.use('/auth', authLimiter);
+app.use('/api/auth', authLimiter);
 
 app.get('/', (req, res) => res.json({ success: true, message: 'blog-server 运行中', port }));
-app.use('/', index);
-app.use('/auth', databaseReady, auth);
-app.use('/account', databaseReady, account);
-app.use('/menu', databaseReady, menu);
-app.use('/role', databaseReady, role);
-app.use('/billbook', databaseReady, billbook);
-app.use('/billList', databaseReady, billList);
-app.use('/billWallet', databaseReady, billWallet);
-app.use('/miniapp/auth', databaseReady, miniAppAuth);
-app.use('/miniapp/users', databaseReady, miniAppUsers);
-app.use('/asset', databaseReady, asset);
+app.use('/api', index);
+app.use('/api/auth', databaseReady, auth);
+app.use('/api/account', databaseReady, account);
+app.use('/api/menu', databaseReady, menu);
+app.use('/api/role', databaseReady, role);
+app.use('/api/billbook', databaseReady, billbook);
+app.use('/api/billList', databaseReady, billList);
+app.use('/api/billWallet', databaseReady, billWallet);
+app.use('/api/miniapp/auth', databaseReady, miniAppAuth);
+app.use('/api/miniapp/users', databaseReady, miniAppUsers);
+app.use('/api/asset', databaseReady, asset);
+app.use('/api/module-config', databaseReady, moduleConfig);
+app.use('/api/wool-activity', databaseReady, woolActivity);
 
 app.use((error, req, res, next) => {
   if (res.headersSent) return next(error);

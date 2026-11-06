@@ -3,9 +3,10 @@ const router = express.Router();
 const MiniAppUser = require('../models/miniAppUser');
 const jwt = require('jsonwebtoken');
 const https = require('https');
+const config = require('../config/env');
 
-// JWT 密钥 (应该放在环境变量中)
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-miniapp';
+// JWT 密钥
+const JWT_SECRET = config.jwtSecret;
 
 /**
  * 微信小程序登录
@@ -30,8 +31,8 @@ router.post('/wechat/login', async (req, res, next) => {
       unionid = undefined;
     } else {
       // 生产环境：调用微信接口
-      const WECHAT_APPID = process.env.WECHAT_MINI_APPID || '';
-      const WECHAT_SECRET = process.env.WECHAT_MINI_SECRET || '';
+      const WECHAT_APPID = config.wechat.appId;
+      const WECHAT_SECRET = config.wechat.secret;
 
       if (!WECHAT_APPID || !WECHAT_SECRET) {
         return res.status(500).json({ success: false, message: '服务器配置错误：缺少微信小程序配置' });
@@ -142,9 +143,9 @@ router.post('/alipay/login', async (req, res, next) => {
       return res.status(400).json({ success: false, message: '缺少 authCode 参数' });
     }
 
-    // 支付宝小程序配置 (应该放在环境变量中)
-    const ALIPAY_APPID = process.env.ALIPAY_MINI_APPID || '';
-    const ALIPAY_PRIVATE_KEY = process.env.ALIPAY_MINI_PRIVATE_KEY || '';
+    // 支付宝小程序配置
+    const ALIPAY_APPID = config.alipay.appId;
+    const ALIPAY_PRIVATE_KEY = config.alipay.privateKey;
 
     if (!ALIPAY_APPID || !ALIPAY_PRIVATE_KEY) {
       return res.status(500).json({ success: false, message: '服务器配置错误：缺少支付宝小程序配置' });

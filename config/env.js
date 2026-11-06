@@ -20,5 +20,13 @@ module.exports = {
   jwtSecret: process.env.JWT_SECRET || 'change-this-jwt-secret',
   jwtExpires: process.env.JWT_EXPIRES || '7d',
   corsOrigins: csv(process.env.CORS_ORIGINS, 'http://localhost:8080,http://127.0.0.1:8080'),
-  adminAccounts: csv(process.env.ADMIN_ACCOUNTS, 'admin@test.com,13800138000')
+  adminAccounts: csv(process.env.ADMIN_ACCOUNTS, 'admin@test.com,13800138000'),
+  wechat: {
+    appId: process.env.WECHAT_MINI_APPID || '',
+    secret: process.env.WECHAT_MINI_SECRET || ''
+  },
+  alipay: {
+    appId: process.env.ALIPAY_MINI_APPID || '',
+    privateKey: process.env.ALIPAY_MINI_PRIVATE_KEY || ''
+  }
 };

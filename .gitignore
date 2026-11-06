@@ -7,6 +7,11 @@ node_modules
 /src/utils/request-temp.js
 _roadhog-api-doc
 
+# environment variables (DO NOT commit)
+.env
+.env.*
+!.env.example
+
 # production
 /dist
 /.vscode
